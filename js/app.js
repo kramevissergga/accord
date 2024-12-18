@@ -354,9 +354,13 @@
                             tabsContentItem.inert = false;
                         }
                         if (isHash && !tabsContentItem.closest(".popup")) setHash(`tab-${tabsBlockIndex}-${index}`);
-                    } else if (tabsBlockAnimate) _slideUp(tabsContentItem, tabsBlockAnimate); else {
-                        tabsContentItem.hidden = true;
-                        tabsContentItem.inert = true;
+                    } else {
+                        const iframes = tabsContentItem.querySelectorAll("iframe");
+                        iframes.forEach((iframe => iframe.remove()));
+                        if (tabsBlockAnimate) _slideUp(tabsContentItem, tabsBlockAnimate); else {
+                            tabsContentItem.hidden = true;
+                            tabsContentItem.inert = true;
+                        }
                     }
                 }));
             }
@@ -663,7 +667,7 @@
                 bodyLock: true,
                 hashSettings: {
                     location: false,
-                    goHash: false
+                    goHash: true
                 },
                 on: {
                     beforeOpen: function() {},
@@ -826,6 +830,8 @@
                     popup: this
                 }
             }));
+            const youtubeIframe = this.previousOpen.element.querySelector("iframe");
+            if (youtubeIframe) youtubeIframe.remove();
             if (this.youTubeCode) if (this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`)) this.targetOpen.element.querySelector(`[${this.options.youtubePlaceAttribute}]`).innerHTML = "";
             this.previousOpen.element.classList.remove(this.options.classes.popupActive);
             this.previousOpen.element.setAttribute("aria-hidden", "true");
@@ -1192,7 +1198,7 @@
             }
         }
         getOption(selectOption, originalSelect) {
-            const selectOptionSelected = selectOption.selected && originalSelect.multiple ? ` ${this.selectClasses.classSelectOptionSelected}` : "";
+            const selectOptionSelected = selectOption.selected ? ` _selected` : "";
             const selectOptionHide = selectOption.selected && !originalSelect.hasAttribute("data-show-selected") && !originalSelect.multiple ? `hidden` : ``;
             const selectOptionClass = selectOption.dataset.class ? ` ${selectOption.dataset.class}` : "";
             const selectOptionLink = selectOption.dataset.href ? selectOption.dataset.href : false;
@@ -1252,6 +1258,10 @@
                         originalSelect.querySelector(`option[value = "${selectSelectedItems.dataset.value}"]`).setAttribute("selected", "selected");
                     }));
                 } else {
+                    if (originalSelect.hasAttribute("data-show-selected")) {
+                        selectItem.querySelectorAll(this.getSelectClass(this.selectClasses.classSelectOption)).forEach((item => item.classList.remove("_selected")));
+                        optionItem.classList.add("_selected");
+                    }
                     if (!originalSelect.hasAttribute("data-show-selected")) setTimeout((() => {
                         if (selectItem.querySelector(`${this.getSelectClass(this.selectClasses.classSelectOption)}[hidden]`)) selectItem.querySelector(`${this.getSelectClass(this.selectClasses.classSelectOption)}[hidden]`).hidden = false;
                         optionItem.hidden = true;
@@ -3005,6 +3015,12 @@
                         padding: {
                             right: "1.8125rem"
                         }
+                    },
+                    499.98: {
+                        perPage: 1,
+                        padding: {
+                            right: "6rem"
+                        }
                     }
                 }
             }).mount();
@@ -3074,31 +3090,134 @@
             }).mount();
         }));
         const productSliders = document.querySelectorAll(".main-product__sliders");
-        if (productSliders.length) productSliders.forEach((sliderWrapper => {
-            const mainSlider = sliderWrapper.querySelector(".main-product__main-slider");
-            const thumbnailSlider = sliderWrapper.querySelector(".main-product__thumbnail-slider");
-            if (mainSlider && thumbnailSlider) {
-                const mainSplide = new Splide(mainSlider, {
-                    type: "fade",
-                    perPage: 1,
-                    pagination: true,
-                    arrows: true
-                }).mount();
-                const thumbSplide = new Splide(thumbnailSlider, {
-                    isNavigation: true,
-                    perPage: 4,
-                    gap: 10,
-                    pagination: false,
-                    arrows: false,
-                    breakpoints: {
-                        991.98: {
-                            perPage: 3
-                        }
+        if (productSliders.length) {
+            const mainSplide = new Splide(".main-product__main-slider", {
+                perPage: 1,
+                pagination: true,
+                arrows: true
+            }).mount();
+            const thumbProductSplide = new Splide(".main-product__thumbnail-slider", {
+                isNavigation: true,
+                perPage: 4,
+                gap: 10,
+                pagination: false,
+                arrows: false,
+                breakpoints: {
+                    991.98: {
+                        perPage: 3
                     }
-                }).mount();
-                mainSplide.sync(thumbSplide);
+                }
+            }).mount();
+            const galleryMainSplide = new Splide(".gallery-tabs__main-slider", {
+                type: "fade",
+                perPage: 1,
+                pagination: true,
+                arrows: true
+            }).mount();
+            const galleryThumbSplide = new Splide(".gallery-tabs__thumbnail-slider", {
+                isNavigation: true,
+                perPage: 4,
+                direction: "ttb",
+                height: 400,
+                gap: 8,
+                pagination: false,
+                arrows: true,
+                breakpoints: {
+                    1099.98: {
+                        height: 298
+                    },
+                    991.98: {
+                        perPage: 3
+                    }
+                }
+            }).mount();
+            mainSplide.sync(thumbProductSplide);
+            mainSplide.sync(galleryMainSplide);
+            mainSplide.sync(galleryThumbSplide);
+        }
+    }));
+    const casesSliders = document.querySelectorAll(".cases-section__slider");
+    if (casesSliders) casesSliders.forEach((slider => {
+        new Splide(slider, {
+            perPage: 2,
+            perMove: 1,
+            arrows: true,
+            pagination: false,
+            gap: "1.5rem",
+            breakpoints: {
+                1299.98: {
+                    perPage: 2
+                },
+                991.98: {
+                    destroy: true,
+                    arrows: false
+                }
             }
-        }));
+        }).mount();
+    }));
+    const casesSlidersLong = document.querySelectorAll(".cases-section-long__slider");
+    if (casesSlidersLong) casesSlidersLong.forEach((slider => {
+        new Splide(slider, {
+            perPage: 2,
+            perMove: 1,
+            arrows: false,
+            pagination: true,
+            gap: "1.25rem",
+            padding: {
+                right: "6.25rem"
+            },
+            breakpoints: {
+                1299.98: {
+                    perPage: 2
+                },
+                991.98: {
+                    perPage: 2,
+                    gap: "0.875rem"
+                },
+                767.98: {
+                    perPage: 2,
+                    padding: {
+                        right: "2.4375rem"
+                    }
+                },
+                449.98: {
+                    perPage: 2
+                }
+            }
+        }).mount();
+    }));
+    const brandSliders = document.querySelectorAll(".brands-section__slider");
+    if (brandSliders) brandSliders.forEach((slider => {
+        new Splide(slider, {
+            type: "loop",
+            perPage: 7,
+            perMove: 1,
+            arrows: true,
+            autoplay: true,
+            interval: 5e3,
+            pauseOnHover: true,
+            pagination: false,
+            gap: "2.125rem",
+            breakpoints: {
+                1299.98: {
+                    perPage: 6
+                },
+                991.98: {
+                    perPage: 5
+                },
+                767.98: {
+                    perPage: 4,
+                    gap: "1.5rem"
+                },
+                449.98: {
+                    perPage: 3,
+                    gap: "0.5rem",
+                    padding: {
+                        right: "2.375rem"
+                    }
+                }
+            }
+        }).mount();
     }));
     function isObject(value) {
         var type = typeof value;
@@ -4063,11 +4182,130 @@
         return SimpleBar;
     }(SimpleBarCore);
     if (dist_canUseDOM) SimpleBar.initHtmlApi();
-    if (document.querySelectorAll("[data-simplebar]").length) document.querySelectorAll("[data-simplebar]").forEach((scrollBlock => {
-        new SimpleBar(scrollBlock, {
+    if (document.querySelectorAll("[data-simplebar-c]").length) document.querySelectorAll("[data-simplebar-c]").forEach((scrollBlock => {
+        const mediaQueryAttr = scrollBlock.getAttribute("data-simplebar-media");
+        if (mediaQueryAttr) {
+            const [type = "max", value] = mediaQueryAttr.split(":");
+            if (value) {
+                const mediaValue = value / 16;
+                const mediaType = type.trim().toLowerCase() === "min" ? "min" : "max";
+                const matchMediaQuery = window.matchMedia(`(${mediaType}-width: ${mediaValue}em)`);
+                if (matchMediaQuery.matches) new SimpleBar(scrollBlock, {
+                    autoHide: false
+                });
+                matchMediaQuery.addEventListener("change", (e => {
+                    if (e.matches) new SimpleBar(scrollBlock, {
+                        autoHide: false
+                    }); else if (SimpleBar.instances.has(scrollBlock)) SimpleBar.instances.get(scrollBlock).unMount();
+                }));
+            }
+        } else new SimpleBar(scrollBlock, {
             autoHide: false
         });
     }));
+    class ScrollWatcher {
+        constructor(props) {
+            let defaultConfig = {
+                logging: true
+            };
+            this.config = Object.assign(defaultConfig, props);
+            this.observer;
+            !document.documentElement.classList.contains("watcher") ? this.scrollWatcherRun() : null;
+        }
+        scrollWatcherUpdate() {
+            this.scrollWatcherRun();
+        }
+        scrollWatcherRun() {
+            document.documentElement.classList.add("watcher");
+            this.scrollWatcherConstructor(document.querySelectorAll("[data-watch]"));
+        }
+        scrollWatcherConstructor(items) {
+            if (items.length) {
+                this.scrollWatcherLogging(`Прокинувся, стежу за об'єктами (${items.length})...`);
+                let uniqParams = uniqArray(Array.from(items).map((function(item) {
+                    if (item.dataset.watch === "navigator" && !item.dataset.watchThreshold) {
+                        let valueOfThreshold;
+                        if (item.clientHeight > 2) {
+                            valueOfThreshold = window.innerHeight / 2 / (item.clientHeight - 1);
+                            if (valueOfThreshold > 1) valueOfThreshold = 1;
+                        } else valueOfThreshold = 1;
+                        item.setAttribute("data-watch-threshold", valueOfThreshold.toFixed(2));
+                    }
+                    return `${item.dataset.watchRoot ? item.dataset.watchRoot : null}|${item.dataset.watchMargin ? item.dataset.watchMargin : "0px"}|${item.dataset.watchThreshold ? item.dataset.watchThreshold : 0}`;
+                })));
+                uniqParams.forEach((uniqParam => {
+                    let uniqParamArray = uniqParam.split("|");
+                    let paramsWatch = {
+                        root: uniqParamArray[0],
+                        margin: uniqParamArray[1],
+                        threshold: uniqParamArray[2]
+                    };
+                    let groupItems = Array.from(items).filter((function(item) {
+                        let watchRoot = item.dataset.watchRoot ? item.dataset.watchRoot : null;
+                        let watchMargin = item.dataset.watchMargin ? item.dataset.watchMargin : "0px";
+                        let watchThreshold = item.dataset.watchThreshold ? item.dataset.watchThreshold : 0;
+                        if (String(watchRoot) === paramsWatch.root && String(watchMargin) === paramsWatch.margin && String(watchThreshold) === paramsWatch.threshold) return item;
+                    }));
+                    let configWatcher = this.getScrollWatcherConfig(paramsWatch);
+                    this.scrollWatcherInit(groupItems, configWatcher);
+                }));
+            } else this.scrollWatcherLogging("Сплю, немає об'єктів для стеження. ZzzZZzz");
+        }
+        getScrollWatcherConfig(paramsWatch) {
+            let configWatcher = {};
+            if (document.querySelector(paramsWatch.root)) configWatcher.root = document.querySelector(paramsWatch.root); else if (paramsWatch.root !== "null") this.scrollWatcherLogging(`Эмм... батьківського об'єкта ${paramsWatch.root} немає на сторінці`);
+            configWatcher.rootMargin = paramsWatch.margin;
+            if (paramsWatch.margin.indexOf("px") < 0 && paramsWatch.margin.indexOf("%") < 0) {
+                this.scrollWatcherLogging(`йой, налаштування data-watch-margin потрібно задавати в PX або %`);
+                return;
+            }
+            if (paramsWatch.threshold === "prx") {
+                paramsWatch.threshold = [];
+                for (let i = 0; i <= 1; i += .005) paramsWatch.threshold.push(i);
+            } else paramsWatch.threshold = paramsWatch.threshold.split(",");
+            configWatcher.threshold = paramsWatch.threshold;
+            return configWatcher;
+        }
+        scrollWatcherCreate(configWatcher) {
+            console.log(configWatcher);
+            this.observer = new IntersectionObserver(((entries, observer) => {
+                entries.forEach((entry => {
+                    this.scrollWatcherCallback(entry, observer);
+                }));
+            }), configWatcher);
+        }
+        scrollWatcherInit(items, configWatcher) {
+            this.scrollWatcherCreate(configWatcher);
+            items.forEach((item => this.observer.observe(item)));
+        }
+        scrollWatcherIntersecting(entry, targetElement) {
+            if (entry.isIntersecting) {
+                !targetElement.classList.contains("_watcher-view") ? targetElement.classList.add("_watcher-view") : null;
+                this.scrollWatcherLogging(`Я бачу ${targetElement.classList}, додав клас _watcher-view`);
+            } else {
+                targetElement.classList.contains("_watcher-view") ? targetElement.classList.remove("_watcher-view") : null;
+                this.scrollWatcherLogging(`Я не бачу ${targetElement.classList}, прибрав клас _watcher-view`);
+            }
+        }
+        scrollWatcherOff(targetElement, observer) {
+            observer.unobserve(targetElement);
+            this.scrollWatcherLogging(`Я перестав стежити за ${targetElement.classList}`);
+        }
+        scrollWatcherLogging(message) {
+            this.config.logging ? functions_FLS(`[Спостерігач]: ${message}`) : null;
+        }
+        scrollWatcherCallback(entry, observer) {
+            const targetElement = entry.target;
+            this.scrollWatcherIntersecting(entry, targetElement);
+            targetElement.hasAttribute("data-watch-once") && entry.isIntersecting ? this.scrollWatcherOff(targetElement, observer) : null;
+            document.dispatchEvent(new CustomEvent("watcherCallback", {
+                detail: {
+                    entry
+                }
+            }));
+        }
+    }
+    modules_flsModules.watcher = new ScrollWatcher({});
     let addWindowScrollEvent = false;
     setTimeout((() => {
         if (addWindowScrollEvent) {
@@ -4199,14 +4437,13 @@
             const videoButton = e.target.closest(".video-block__button");
             const videoBody = videoButton.closest(".video-block__body");
             const videoPlaceholder = videoBody.querySelector(".video-block__placeholder");
-            if (videoBody && videoPlaceholder) {
+            if (videoBody && videoPlaceholder && videoBody.dataset.video) {
                 const codeVideo = videoBody.dataset.video;
                 const urlVideo = `https://www.youtube.com/embed/${codeVideo}?rel=0&showinfo=0&autoplay=1`;
                 const iframe = document.createElement("iframe");
                 iframe.setAttribute("allowfullscreen", "");
                 iframe.setAttribute("allow", `autoplay; encrypted-media`);
                 iframe.setAttribute("src", urlVideo);
-                videoPlaceholder.hidden = true;
                 videoBody.appendChild(iframe);
             }
         }
@@ -4286,6 +4523,13 @@
         }));
         scrollContainer.addEventListener("scroll", (() => {
             checkButtons();
+        }));
+    }
+    const searchInput = document.querySelector(".search-header__input");
+    if (searchInput) {
+        const searchBlock = searchInput.closest(".search-header");
+        searchInput.addEventListener("input", (() => {
+            if (searchInput.value.trim().length >= 3) searchBlock.classList.add("_results-show"); else searchBlock.classList.remove("_results-show");
         }));
     }
     menuInit();
