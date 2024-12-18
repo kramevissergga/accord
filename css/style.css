@@ -1410,29 +1410,31 @@ body::after {
 }
 .services-popup__body {
   flex-shrink: 1;
-  flex-grow: 1
+  flex-grow: 1;
+  padding: 1.875rem 3.75rem 3.75rem
 }
 .body-services {
-  padding: 1.875rem 3.75rem 3.75rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2.125rem
+  gap: 2.125rem;
+  color: #1a1a1c
 }
 .body-services__close {
   align-self: end
 }
 .body-services__title {
-  color: #1a1a1c;
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
   line-height: 1.4
 }
 .body-services__label {
-  color: #1a1a1c;
   line-height: 1.4;
   text-align: center
+}
+.body-services__label--left {
+  text-align: left
 }
 .body-services__form {
   width: 100%
@@ -1448,7 +1450,8 @@ body::after {
 .body-services__input,
 .body-services__textarea {
   font-size: .8125rem!important;
-  border: .09375rem solid #646464!important
+  border: .09375rem solid #646464!important;
+  background-color: #fff
 }
 .body-services__input::-webkit-input-placeholder,
 .body-services__textarea::-webkit-input-placeholder {
@@ -8488,6 +8491,85 @@ body::after {
 .vacancies__form-file_input .vacancies__form-file {
   display: none
 }
+.services__container>* {
+  margin-bottom: 2.125rem
+}
+.services__text h2 {
+  font-size: 1.5rem
+}
+.services__previews {
+  display: grid;
+  gap: 1.5rem
+}
+.services__form {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 1.0625rem
+}
+.services__form::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: .6;
+  z-index: 2
+}
+.services__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%
+}
+.services__body {
+  position: relative;
+  max-width: 38.125rem;
+  z-index: 3;
+  gap: 1.5rem;
+  color: #fff
+}
+.services__container>*:last-child {
+  margin-bottom: 0
+}
+.preview-services {
+  background-color: #fff;
+  padding: 1.5rem .875rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  border-radius: .5rem
+}
+.preview-services__title {
+  color: #000;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4
+}
+.preview-services__title a {
+  transition: color .3s
+}
+.preview-services__image-link {
+  margin: 0 -.875rem;
+  height: 14.25rem;
+  overflow: hidden
+}
+.preview-services__image-link img {
+  transition: -webkit-transform .3s;
+  transition: transform .3s;
+  transition: transform .3s,-webkit-transform .3s
+}
+.preview-services__text {
+  flex-grow: 1
+}
+.preview-services__button {
+  font-size: .9375rem;
+  align-self: center
+}
 .page--gray {
   background-color: #ebebec
 }
@@ -8967,6 +9049,12 @@ body::after {
   .wishlist-account__header .select .select__content {
     flex-grow: 0
   }
+  .services__previews {
+    grid-template-columns: repeat(2,1fr)
+  }
+  .services__body .body-services__form {
+    padding: 0 3.125rem
+  }
 }
 @media (min-width:65.62375em) {
   .filter-catalog__header {
@@ -9226,6 +9314,20 @@ body::after {
   .services-section__news-article {
     margin-bottom: 6.25rem
   }
+  .page__services {
+    margin-bottom: 6.25rem
+  }
+  .services__previews {
+    -webkit-column-gap: 5.25rem;
+    -moz-column-gap: 5.25rem;
+    column-gap: 5.25rem
+  }
+  .services__previews {
+    padding-left: 5.25rem
+  }
+  .services__previews {
+    padding-right: 5.25rem
+  }
 }
 @media (min-width:89.99875em) {
   .submenu-catalog-h__block--pc {
@@ -9400,6 +9502,9 @@ body::after {
   }
   .terms__hero {
     margin-bottom: .625rem
+  }
+  .page__services {
+    margin-bottom: 1.875rem
   }
 }
 @media (max-width:81.24875em) {
@@ -9710,8 +9815,10 @@ body::after {
   .services-popup__text {
     font-size: 1rem
   }
+  .services-popup__body {
+    padding: 1.875rem 1.5rem
+  }
   .body-services {
-    padding: 1.875rem 1.5rem;
     gap: 1.5rem
   }
   .body-services__label {
@@ -10598,6 +10705,15 @@ body::after {
     font-size: 1rem;
     line-height: 1.4rem
   }
+  .services__text h2 {
+    font-size: 1.25rem
+  }
+  .services__text {
+    font-size: 1rem
+  }
+  .preview-services__text {
+    font-size: 1rem
+  }
 }
 @media (max-width:61.99875em)and (max-width:47.99875em) {
   .kitchen-home__images:not(:last-child) {
@@ -10777,7 +10893,7 @@ body::after {
   .services-popup__text {
     max-width: 21.375rem
   }
-  .body-services {
+  .services-popup__body {
     padding: 1.875rem 1.0625rem
   }
   .body-services__title {
@@ -11988,6 +12104,30 @@ body::after {
     font-size: .875rem;
     line-height: 1.225rem
   }
+  .services__container>* {
+    margin-bottom: 1.5rem
+  }
+  .services__text h2 {
+    font-size: 1rem
+  }
+  .services__text {
+    font-size: .875rem
+  }
+  .services__form {
+    margin: 0 -.9375rem
+  }
+  .services__container>*:last-child {
+    margin-bottom: 0
+  }
+  .preview-services__title {
+    font-size: 1.25rem
+  }
+  .preview-services__text {
+    font-size: .875rem
+  }
+  .preview-services__button {
+    font-size: .8125rem
+  }
   .wrapper {
     padding-bottom: 3.425rem
   }
@@ -12306,6 +12446,13 @@ body::after {
   }
   .body-catalog__filter {
     width: 100%
+  }
+  .preview-services {
+    padding: .5rem
+  }
+  .preview-services__image-link {
+    height: 8.75rem;
+    margin: 0 -.5rem
   }
 }
 @media (max-width:24.99875em) {
@@ -12851,6 +12998,16 @@ body::after {
       margin-bottom: calc(.625rem + 3.75*(100vw - 20rem)/ 65.875)
     }
   }
+  @supports (margin-bottom:clamp(1.875rem ,0.5467267552rem + 6.6413662239vw ,6.25rem)) {
+    .page__services {
+      margin-bottom: clamp(1.875rem ,.5467267552rem + 6.6413662239vw ,6.25rem)
+    }
+  }
+  @supports not (margin-bottom:clamp(1.875rem ,0.5467267552rem + 6.6413662239vw ,6.25rem)) {
+    .page__services {
+      margin-bottom: calc(1.875rem + 4.375*(100vw - 20rem)/ 65.875)
+    }
+  }
 }
 @media (max-width:47.99875em)and (min-width:28.12375em) {
   .item-product__buy-button::before {
@@ -12978,6 +13135,40 @@ body::after {
   @supports not (margin-bottom:clamp(0.25rem ,-2.02208654rem + 3.6647295953vw ,1.125rem)) {
     .order-p-block__info:not(:last-child) {
       margin-bottom: calc(.25rem + .875*(100vw - 61.99875rem)/ 23.87625)
+    }
+  }
+  @supports ((-moz-column-gap:clamp(1.5rem ,-8.2375137427rem + 15.7059839799vw ,5.25rem)) or (column-gap:clamp(1.5rem ,-8.2375137427rem + 15.7059839799vw ,5.25rem))) {
+    .services__previews {
+      -webkit-column-gap: clamp(1.5rem ,-8.2375137427rem + 15.7059839799vw ,5.25rem);
+      -moz-column-gap: clamp(1.5rem ,-8.2375137427rem + 15.7059839799vw ,5.25rem);
+      column-gap: clamp(1.5rem ,-8.2375137427rem + 15.7059839799vw ,5.25rem)
+    }
+  }
+  @supports not ((-moz-column-gap:clamp(1.5rem ,-8.2375137427rem + 15.7059839799vw ,5.25rem)) or (column-gap:clamp(1.5rem ,-8.2375137427rem + 15.7059839799vw ,5.25rem))) {
+    .services__previews {
+      -webkit-column-gap: calc(1.5rem + 3.75*(100vw - 61.99875rem)/ 23.87625);
+      -moz-column-gap: calc(1.5rem + 3.75*(100vw - 61.99875rem)/ 23.87625);
+      column-gap: calc(1.5rem + 3.75*(100vw - 61.99875rem)/ 23.87625)
+    }
+  }
+  @supports (padding-left:clamp(0.0000000625rem ,-13.632519015rem + 21.9883773101vw ,5.25rem)) {
+    .services__previews {
+      padding-left: clamp(.0000000625rem ,-13.632519015rem + 21.9883773101vw ,5.25rem)
+    }
+  }
+  @supports not (padding-left:clamp(0.0000000625rem ,-13.632519015rem + 21.9883773101vw ,5.25rem)) {
+    .services__previews {
+      padding-left: calc(.0000000625rem + 5.2499999375*(100vw - 61.99875rem)/ 23.87625)
+    }
+  }
+  @supports (padding-right:clamp(0.0000000625rem ,-13.632519015rem + 21.9883773101vw ,5.25rem)) {
+    .services__previews {
+      padding-right: clamp(.0000000625rem ,-13.632519015rem + 21.9883773101vw ,5.25rem)
+    }
+  }
+  @supports not (padding-right:clamp(0.0000000625rem ,-13.632519015rem + 21.9883773101vw ,5.25rem)) {
+    .services__previews {
+      padding-right: calc(.0000000625rem + 5.2499999375*(100vw - 61.99875rem)/ 23.87625)
     }
   }
 }
@@ -13364,5 +13555,12 @@ body::after {
   .our-decision .decision-list_container .decision-list__item:hover img {
     -webkit-transform: scale(1.1);
     transform: scale(1.1)
+  }
+  .preview-services__title a:hover {
+    color: #2f7f5f
+  }
+  .preview-services__image-link:hover img {
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05)
   }
 }
