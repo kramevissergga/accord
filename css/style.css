@@ -7850,7 +7850,7 @@ body::after {
   background-color: #249c6b;
   color: #fff
 }
-.brands-section {
+.section-brands {
   background-color: #fff;
   display: grid;
   gap: 15.75rem;
@@ -10532,7 +10532,7 @@ body::after {
     font-size: 1rem;
     line-height: 1.4rem
   }
-  .brands-section {
+  .section-brands {
     grid-template-columns: 1fr;
     gap: 1.875rem
   }
