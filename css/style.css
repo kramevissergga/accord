@@ -3098,6 +3098,9 @@ body::after {
   flex-direction: column;
   gap: 1.25rem
 }
+.login-mob-menu:has(.login-mob-menu__user) {
+  padding: .75rem 1.5rem
+}
 .login-mob-menu__text {
   color: #050505;
   text-align: center;
@@ -3107,6 +3110,19 @@ body::after {
 .login-mob-menu__link {
   border-width: .125rem;
   font-size: .8125rem
+}
+.login-mob-menu__user {
+  color: #6f4a8f;
+  font-size: .8125rem;
+  font-weight: 600;
+  line-height: 140%;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: .5rem
+}
+.login-mob-menu__user::before {
+  font-size: 1.125rem
 }
 .spoilers-catalog-h__title {
   display: flex;
@@ -3123,23 +3139,10 @@ body::after {
 .spoilers-catalog-h__title span {
   flex-grow: 1
 }
-.spoilers-catalog-h__title:hover {
-  color: #249c6b;
-  border-color: #249c6b;
-  background-color: #e5e3e3
-}
-.spoilers-catalog-h__title:hover+.spoilers-catalog-h__submenu {
-  visibility: visible;
-  opacity: 1
-}
 .spoilers-catalog-h__icon {
   width: 2.125rem;
   height: 2.125rem;
   flex-shrink: 0
-}
-.spoilers-catalog-h__submenu:not(:hover) {
-  visibility: hidden;
-  opacity: 0
 }
 .submenu-catalog-h {
   background-color: #fff;
@@ -9127,6 +9130,19 @@ body::after {
   }
   .actions-header__item>span {
     display: none
+  }
+  .spoilers-catalog-h__title:hover {
+    color: #249c6b;
+    border-color: #249c6b;
+    background-color: #e5e3e3
+  }
+  .spoilers-catalog-h__title:hover+.spoilers-catalog-h__submenu {
+    visibility: visible;
+    opacity: 1
+  }
+  .spoilers-catalog-h__submenu:not(:hover) {
+    visibility: hidden;
+    opacity: 0
   }
   .submenu-catalog-h {
     position: absolute;
